@@ -1,4 +1,7 @@
 from . import (
-    StartCommand,
+    DefaultCommands,
+    Catalog,
+    Basket,
+    FreqAskedQuestions,
     callback
 )

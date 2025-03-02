@@ -11,7 +11,6 @@ async def main():
     dp.include_routers(
         router
     )
-
     await bot.delete_webhook(drop_pending_updates=True) #Удаляем накопленные сообщения, если бот был выкл, а его пытались использовать
     await dp.start_polling(bot)
 
