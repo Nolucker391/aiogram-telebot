@@ -1,25 +1,22 @@
 from aiogram import types, F
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InputMediaPhoto, FSInputFile
+
+from handlers.DefaultCommands.StartCommand import set_user_state
 from handlers.routes import router
 from aiogram.fsm.context import FSMContext
-from states import UserState
-from aiogram.types import Message
+from states.states import UserState
+from keyboards.catalog.sub_cat.LaptopsBuilder import laptop_builder
 
 @router.callback_query(F.data == 'laptops')
-async def check_laptops(callback: types.CallbackQuery, state: FSMContext):
-    await state.update_data(previous_state=UserState.first_section)  # Сохраняем "Каталог" как предыдущее состояние
-    await state.set_state(UserState.select_laptops)
-    await callback.answer(text='Раздел ноутбуков.')
+async def laptops_selection(callback: types.CallbackQuery, state: FSMContext):
+    builder = laptop_builder()
+    file_path = "assets/images/laptops.png"
 
-    builder = InlineKeyboardBuilder()
-    builder.row(
-        types.InlineKeyboardButton(text='Apple', callback_data='Apple'),
-        types.InlineKeyboardButton(text='Huawei', callback_data='Huawei')
+    await set_user_state(state, UserState.select_laptops)
+    await callback.message.edit_media(
+        media=InputMediaPhoto(
+            media=FSInputFile(file_path),  # Новый путь к фото
+            caption="Выберите интересующую модель.🪬"
+        ),
+        reply_markup=builder.as_markup()  # Обновленные кнопки (если нужны)
     )
-    builder.row(
-        types.InlineKeyboardButton(text='Lenovo', callback_data='Lenovo'),
-    )
-    builder.row(
-        types.InlineKeyboardButton(text='◀️назад', callback_data='back'),
-    )
-    await callback.message.edit_reply_markup(reply_markup=builder.as_markup())

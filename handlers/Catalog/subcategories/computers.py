@@ -1,24 +1,23 @@
 from aiogram import types, F
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import InputMediaPhoto, FSInputFile
+
 from handlers.routes import router
 from aiogram.fsm.context import FSMContext
-from states import UserState
-from aiogram.types import Message
+
+from states.history_static import set_user_state
+from states.states import UserState
+from keyboards.catalog.sub_cat.ComputersBuilder import computer_builder
 
 @router.callback_query(F.data == 'computers')
-async def check_balance_button(callback: types.CallbackQuery, state: FSMContext):
-    await state.set_state(Catalog.select_computer)
-    await callback.answer(text='Раздел компьютеров.')
+async def computer_selection(callback: types.CallbackQuery, state: FSMContext):
+    builder = computer_builder()
+    file_path = "assets/images/computers.png"
 
-    builder = InlineKeyboardBuilder()
-    builder.row(
-        types.InlineKeyboardButton(text='Игровые', callback_data='gaming'),
-        types.InlineKeyboardButton(text='Офисные', callback_data='office')
+    await set_user_state(state, UserState.select_computer)
+    await callback.message.edit_media(
+        media=InputMediaPhoto(
+            media=FSInputFile(file_path),  # Новый путь к фото
+            caption="Выберите интересующую модель.🪬"
+        ),
+        reply_markup=builder.as_markup()  # Обновленные кнопки (если нужны)
     )
-    builder.row(
-        types.InlineKeyboardButton(text='Для работы', callback_data='workpc'),
-    )
-    builder.row(
-        types.InlineKeyboardButton(text='◀️назад', callback_data='back'),
-    )
-    await callback.message.edit_reply_markup(reply_markup=builder.as_markup())
