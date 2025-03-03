@@ -1,7 +1,7 @@
 from aiogram import F
 from aiogram.types import CallbackQuery
 
-from handlers.Catalog.subcategories.computers import computer_selection
+from handlers.Catalog.subcategories.computers import computer_selection, show_gaming_pc_with_cart
 from handlers.Catalog.subcategories.laptops import laptops_selection
 from handlers.Catalog.subcategories.monoblocks import monoblock_selection
 from handlers.DefaultCommands.StartCommand import start_command
@@ -24,10 +24,11 @@ async def back_to_menu(callback: CallbackQuery,  state: FSMContext):
 
     await state.update_data(history=history)  # Обновляем историю
     await state.set_state(previous_state)  # Возвращаем предыдущее состояние
-
         # Определяем, куда вернуть пользователя
     if previous_state == UserState.start_section:
-        await start_command(callback.message, state)
+        # await start_command(callback.message, state)
+        await start_command(callback, state)  # Передаем callback вместо callback.message
+        await callback.answer("Вы вернулись в главное меню.")
     elif previous_state == UserState.first_section:
         await section_shop(callback, state)
     elif previous_state == UserState.select_laptops:
@@ -36,12 +37,9 @@ async def back_to_menu(callback: CallbackQuery,  state: FSMContext):
         await monoblock_selection(callback, state)
     elif previous_state == UserState.select_computer:
         await computer_selection(callback, state)
+    elif previous_state == UserState.select_gaming_pc:
+        await computer_selection(callback, state)
 
-    await callback.answer("Вы вернулись в главное меню.")
-    # builder_menu = key_start()
-    # await callback.answer(text='Вы вернулись в главное меню.')
-    #
-    # await callback.message.edit_text(text="Привет, я - БОТан:")
-    #
-    # await callback.message.edit_reply_markup(reply_markup=builder_menu.as_markup())
-    #
+
+
+

@@ -10,7 +10,7 @@ from keyboards.catalog.CategoriesBuilder import cat_builder
 @router.callback_query(F.data == 'first_block')
 async def section_shop(callback: types.CallbackQuery, state: FSMContext):
     builder = cat_builder()
-    file_path = "assets/images/catalog.png"
+    file_path = "bot/assets/images/catalog.png"
 
     await set_user_state(state, UserState.first_section)
     await callback.message.edit_media(

@@ -7,4 +7,8 @@ class UserState(StatesGroup):
     select_laptops = State()
     select_monoblocks = State()
 
+    select_gaming_pc = State()
+
+    add_basket_prod = State()
+
 

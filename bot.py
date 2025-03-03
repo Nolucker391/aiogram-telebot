@@ -1,11 +1,21 @@
+import os
+import django
+import sys
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(BASE_DIR, "api"))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.api.settings')
+django.setup()
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 import asyncio
 from config.config_reader import config
 from handlers.routes import router
 
+bot = Bot(config.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode="HTML"))
+
+
 async def main():
-    bot = Bot(config.bot_token.get_secret_value(), default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher()
 
     dp.include_routers(
