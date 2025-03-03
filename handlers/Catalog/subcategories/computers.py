@@ -1,55 +1,3 @@
-# from aiogram import types, F
-# from aiogram.types import InputMediaPhoto, FSInputFile
-# from asgiref.sync import sync_to_async
-#
-# from handlers.routes import router
-# from aiogram.fsm.context import FSMContext
-#
-# from states.history_static import set_user_state
-# from states.states import UserState
-# from keyboards.catalog.sub_cat.ComputersBuilder import computer_builder, lulu_build
-# from products.models import Product, Category
-#
-#
-# @router.callback_query(F.data == 'computers')
-# async def computer_selection(callback: types.CallbackQuery, state: FSMContext):
-#     builder = computer_builder()
-#     file_path = "bot/assets/images/computers.png"
-#
-#     await set_user_state(state, UserState.select_computer)
-#     await callback.message.edit_media(
-#         media=InputMediaPhoto(
-#             media=FSInputFile(file_path),  # Новый путь к фото
-#             caption="Выберите интересующую модель.🪬"
-#         ),
-#         reply_markup=builder.as_markup()  # Обновленные кнопки (если нужны)
-#     )
-#
-#
-# @router.callback_query(F.data == 'gaming')
-# async def show_gaming_pc_with_cart(callback: types.CallbackQuery, state: FSMContext):
-#     await set_user_state(state, UserState.select_gaming_pc)
-#
-#     prod = await sync_to_async(lambda: Product.objects.first())()
-#     builder = lulu_build(product_id=prod.id)
-#
-#     if not prod:
-#         await callback.message.answer("❌ Продукты не найдены.")
-#         return
-#
-#     images = await sync_to_async(lambda: list(prod.images.all()))()
-#     image_path = images[0].image.path  # Абсолютный путь к изображению
-#
-#     await callback.message.edit_media(
-#         media=InputMediaPhoto(
-#             media=FSInputFile(image_path),
-#             caption=f"🖥<b>Название:</b> {prod.name}\n📜<b>Характеристики:</b> {prod.description}\n\n💰<b>Цена:</b> {prod.price} руб."
-#         ),
-#         reply_markup=builder.as_markup()
-#     )
-#
-#
-import os
 from aiogram import types, F
 from aiogram.types import InputMediaPhoto, FSInputFile
 from asgiref.sync import sync_to_async
@@ -99,34 +47,6 @@ async def computer_selection(callback: types.CallbackQuery, state: FSMContext):
     )
 
 
-# @router.callback_query(F.data == 'gaming')
-# async def show_gaming_pc_with_cart(callback: types.CallbackQuery, state: FSMContext):
-#     """ Показывает товары из подкатегории 'Игровые компьютеры', если она принадлежит категории 'Компьютеры' """
-#     await set_user_state(state, UserState.select_gaming_pc)
-#
-#     products = await get_subcategory_products("компьютеры", "игровые")  # Проверяем вложенность
-#
-#     if not products:
-#         await callback.answer("❌ В подкатегории 'Игровые компьютеры' пока нет товаров.")
-#         return
-#
-#     for prod in products:
-#         images = await sync_to_async(lambda: list(prod.images.all()))()
-#         image_paths = [img.image.path for img in images] if images else ["bot/assets/images/default.png"]
-#
-#         builder = lulu_build(product_id=prod.id)
-#
-#         # Отправляем первое фото, остальные можно переслать отдельно
-#         await callback.message.answer_photo(
-#             photo=FSInputFile(image_paths[0]),
-#             caption=f"🖥<b>Название:</b> {prod.name}\n📜<b>Описание:</b> {prod.description}\n💰<b>Цена:</b> {prod.price} руб.",
-#             reply_markup=builder.as_markup()
-#         )
-#
-#         # Если у товара несколько фото, отправляем остальные
-#         for image_path in image_paths[1:]:
-#             await callback.message.answer_photo(FSInputFile(image_path))
-#
 @router.callback_query(F.data == 'gaming')
 async def show_gaming_pc_with_cart(callback: types.CallbackQuery, state: FSMContext):
     """ Показывает товары из подкатегории 'Игровые компьютеры', если она принадлежит категории 'Компьютеры' """

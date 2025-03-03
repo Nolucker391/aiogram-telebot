@@ -37,10 +37,10 @@ def build_navigation_keyboard(index: int, total: int, product_id: int):
     # Кнопки навигации
     row = []
     if index > 0:
-        row.append(types.InlineKeyboardButton(text="⏮ Назад", callback_data="prev_product"))
+        row.append(types.InlineKeyboardButton(text="⬅️ Предыдущая", callback_data="prev_product"))
     row.append(types.InlineKeyboardButton(text="🛒 В корзину", callback_data=f"add_basket_{product_id}"))
     if index < total - 1:
-        row.append(types.InlineKeyboardButton(text="⏭ Вперёд", callback_data="next_product"))
+        row.append(types.InlineKeyboardButton(text="Cледующая ➡", callback_data="next_product"))
 
     builder.row(*row)
     builder.row(types.InlineKeyboardButton(text="🔙 Вернуться", callback_data="back"))

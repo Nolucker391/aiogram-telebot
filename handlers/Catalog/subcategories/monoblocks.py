@@ -11,7 +11,7 @@ from keyboards.catalog.sub_cat.MonoBuilder import monoblock_bluider
 @router.callback_query(F.data == 'monoblocks')
 async def monoblock_selection(callback: types.CallbackQuery, state: FSMContext):
     builder = monoblock_bluider()
-    file_path = "assets/images/monoblocks.png"
+    file_path = "bot/assets/images/monoblocks.png"
 
     await set_user_state(state, UserState.select_monoblocks)
     await callback.message.edit_media(
